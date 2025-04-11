@@ -1,27 +1,52 @@
-# Deploy FastAPI on Render
+# Birthday Reminder API on Render
 
-Use this repo as a template to deploy a Python [FastAPI](https://fastapi.tiangolo.com) service on Render.
+This is a simple FastAPI server for managing birthday reminders. It provides endpoints to add, update, and query birthdays, with support for checking birthdays in the current week or month.
 
-See https://render.com/docs/deploy-fastapi or follow the steps below:
+## API Endpoints
 
-## Manual Steps
+- `GET /` - Check if API is running
+- `GET /birthdays` - Get all birthdays
+- `POST /birthdays` - Add a new birthday
+- `PUT /birthdays/{name}` - Update an existing birthday
+- `GET /birthdays/week` - Get birthdays in the next 7 days
+- `GET /birthdays/month` - Get birthdays in the current month
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
-2. Create a new Web Service on Render.
-3. Specify the URL to your new repository or this repository.
-4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
-5. Specify the following as the Start Command.
+## Deployment on Render
 
-    ```shell
-    uvicorn main:app --host 0.0.0.0 --port $PORT
-    ```
+1. Create a new Web Service on Render
+2. Link to your repository
+3. Use the following settings:
+   - **Environment**: Python 3
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app:app --host 0.0.0.0 --port $PORT`
 
-6. Click Create Web Service.
+## Local Development
 
-Or simply click:
+1. Install dependencies:
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/fastapi)
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Thanks
+2. Run the server:
+   ```bash
+   uvicorn app:app --reload
+   ```
 
-Thanks to [Harish](https://harishgarg.com) for the [inspiration to create a FastAPI quickstart for Render](https://twitter.com/harishkgarg/status/1435084018677010434) and for some sample code!
+The server will be available at `http://localhost:8000`
+
+## API Usage Example
+
+Add a birthday:
+
+```bash
+curl -X POST http://localhost:8000/birthdays \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","date":"2024-06-15"}'
+```
+
+Get birthdays this month:
+
+```bash
+curl http://localhost:8000/birthdays/month
+```
